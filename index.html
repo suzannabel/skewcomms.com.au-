@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skew Communications — Clarity. Control. Capability.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal:        #2d7d7d;
+    --teal-light:  #75c0ac;
+    --orange:      #e28e4e;
+    --gray-text:   #848484;
+    --gray-border: #e5e5e5;
+    --bg-off:      #fafafa;
+    --white:       #ffffff;
+    --font-main:   'DM Sans', sans-serif;
+    --font-mono:   'DM Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: var(--font-main);
+    color: var(--gray-text);
+    background: var(--white);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 1160px; margin: 0 auto; padding: 0 2.5rem; }
+
+  /* ── NAV ── */
+  nav {
+    border-bottom: 1px solid var(--gray-border);
+    background: var(--white);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 72px;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none; cursor: pointer;
+  }
+  .nav-logo {
+    width: 38px; height: 38px;
+    background: var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); color: var(--white);
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .nav-brand-text .name {
+    font-size: 1.1rem; font-weight: 500; letter-spacing: 0.1em;
+    color: var(--teal); line-height: 1.1; text-transform: uppercase;
+  }
+  .nav-brand-text .tagline {
+    font-size: 0.65rem; letter-spacing: 0.14em; color: var(--gray-text);
+    text-transform: uppercase; font-family: var(--font-mono);
+  }
+  .nav-links { display: flex; align-items: center; gap: 2.2rem; }
+  .nav-links a {
+    font-size: 0.82rem; letter-spacing: 0.04em; color: var(--gray-text);
+    text-decoration: none; transition: color 0.2s; cursor: pointer;
+    font-family: var(--font-mono);
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--teal); }
+
+  /* ── PAGES ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── HERO ── */
+  .hero { padding: 7rem 0 5rem; }
+  .hero-label {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    letter-spacing: 0.18em; color: var(--orange);
+    text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.8rem, 5.5vw, 4.2rem);
+    font-weight: 300; letter-spacing: -0.02em; line-height: 1.05;
+    color: var(--teal); margin-bottom: 1.8rem;
+  }
+  .hero h1 em { font-style: normal; font-weight: 500; }
+  .hero p {
+    font-size: 1.15rem; max-width: 540px;
+    color: var(--gray-text); margin-bottom: 2.5rem; line-height: 1.75;
+    font-weight: 300;
+  }
+  .hero-sub {
+    font-size: 0.9rem; max-width: 560px;
+    color: var(--gray-text); margin-top: -1.5rem; margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+
+  /* ── BUTTONS ── */
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--teal); color: var(--white);
+    padding: 0.9rem 2rem; font-size: 0.88rem; font-weight: 500;
+    font-family: var(--font-mono); letter-spacing: 0.06em;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--teal-light); }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    border: 1px solid var(--teal); color: var(--teal);
+    padding: 0.9rem 2rem; font-size: 0.88rem; font-weight: 500;
+    font-family: var(--font-mono); letter-spacing: 0.06em;
+    text-decoration: none; cursor: pointer;
+    transition: all 0.2s; background: transparent;
+  }
+  .btn-outline:hover { background: var(--teal); color: var(--white); }
+  .btn-text {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    color: var(--teal); font-size: 0.88rem; font-weight: 500;
+    font-family: var(--font-mono); letter-spacing: 0.05em;
+    text-decoration: none; cursor: pointer; transition: color 0.2s;
+  }
+  .btn-text:hover { color: var(--teal-light); }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 0; }
+  section.border-top { border-top: 1px solid var(--gray-border); }
+  section.bg-off { background: var(--bg-off); }
+  section.bg-teal { background: var(--teal); }
+
+  .section-label {
+    font-size: 0.72rem; font-family: var(--font-mono);
+    letter-spacing: 0.18em; color: var(--orange);
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .section-header { max-width: 620px; margin-bottom: 3.5rem; }
+  .section-header h2 {
+    font-size: clamp(1.7rem, 3vw, 2.2rem); font-weight: 300;
+    color: var(--teal); margin-bottom: 1rem; letter-spacing: -0.015em; line-height: 1.2;
+  }
+  .section-header p { font-size: 1rem; line-height: 1.75; font-weight: 300; }
+
+  /* ── GRIDS ── */
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 3rem; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 2rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; }
+
+  /* ── HOME: PILLARS ── */
+  .pillar { padding: 0; }
+  .pillar-accent {
+    width: 2px; height: 48px; margin-bottom: 1.5rem;
+  }
+  .pillar-accent.gov { background: var(--orange); }
+  .pillar-accent.comms { background: var(--teal-light); }
+  .pillar-accent.cap { background: var(--teal); }
+  .pillar h3 {
+    font-size: 1.05rem; font-weight: 500; margin-bottom: 0.75rem;
+    letter-spacing: 0.01em;
+  }
+  .pillar.gov h3 { color: var(--orange); }
+  .pillar.comms h3 { color: var(--teal-light); }
+  .pillar.cap h3 { color: var(--teal); }
+  .pillar p { font-size: 0.95rem; line-height: 1.75; font-weight: 300; }
+
+  /* ── HOME: METHOD PREVIEW ── */
+  .method-preview {
+    border: 1px solid var(--gray-border);
+    padding: 3rem; max-width: 520px;
+  }
+  .method-step { display: flex; align-items: flex-start; gap: 1.5rem; margin-bottom: 0; }
+  .step-num {
+    flex-shrink: 0; width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.95rem; font-weight: 500; color: var(--white);
+    font-family: var(--font-mono);
+  }
+  .step-num.s1 { background: var(--orange); }
+  .step-num.s2 { background: var(--teal-light); }
+  .step-num.s3 { background: var(--teal); }
+  .step-arrow { text-align: left; padding-left: 1.5rem; color: var(--gray-border); font-size: 1rem; padding-top: 0.4rem; padding-bottom: 0.4rem; }
+  .method-step h3 { font-size: 1rem; font-weight: 500; color: var(--teal); margin-bottom: 0.2rem; }
+  .method-step p { font-size: 0.88rem; line-height: 1.6; font-weight: 300; }
+
+  /* ── HOME: TEASER CARDS ── */
+  .teaser-card {
+    border: 1px solid var(--gray-border); padding: 2.5rem;
+    display: flex; flex-direction: column; gap: 1rem;
+    transition: border-color 0.2s;
+  }
+  .teaser-card:hover { border-color: var(--teal-light); }
+  .teaser-card h3 { font-size: 1.15rem; font-weight: 500; color: var(--teal); }
+  .teaser-card p { font-size: 0.9rem; line-height: 1.7; flex: 1; font-weight: 300; }
+
+  /* ── CTA BLOCK ── */
+  .cta-block {
+    border: 1px solid var(--gray-border); padding: 4rem;
+    display: flex; align-items: center; gap: 4rem;
+  }
+  .cta-block-left { flex: 1; }
+  .cta-block h2 {
+    font-size: 1.8rem; font-weight: 300; color: var(--teal);
+    letter-spacing: -0.01em; margin-bottom: 0.75rem;
+  }
+  .cta-block p { font-size: 0.98rem; line-height: 1.75; font-weight: 300; }
+  .cta-block-right { flex-shrink: 0; }
+
+  /* ── AI GOVERNANCE CARDS ── */
+  .gov-card {
+    border: 1px solid var(--gray-border); padding: 2rem;
+    transition: border-color 0.2s;
+  }
+  .gov-card:hover { border-color: var(--teal-light); }
+  .gov-card .num {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--orange); margin-bottom: 0.75rem; letter-spacing: 0.1em;
+  }
+  .gov-card h3 { font-size: 0.98rem; font-weight: 500; color: var(--teal); margin-bottom: 0.6rem; }
+  .gov-card p { font-size: 0.85rem; line-height: 1.65; font-weight: 300; }
+
+  /* ── AI COMPONENT DETAIL ── */
+  .ai-component {
+    border-bottom: 1px solid var(--gray-border);
+    padding: 3rem 0;
+  }
+  .ai-component:last-child { border-bottom: none; }
+  .ai-component-header { display: flex; align-items: flex-start; gap: 2rem; margin-bottom: 1.5rem; }
+  .ai-component-num {
+    width: 48px; height: 48px; background: var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 0.85rem;
+    color: var(--white); flex-shrink: 0;
+  }
+  .ai-component h2 { font-size: 1.3rem; font-weight: 400; color: var(--teal); letter-spacing: -0.01em; }
+  .ai-component .desc { font-size: 0.98rem; line-height: 1.75; margin-bottom: 1.5rem; font-weight: 300; max-width: 640px; }
+  .capabilities-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem;
+    max-width: 560px;
+  }
+  .capability-item {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.88rem; font-weight: 300;
+  }
+  .check {
+    color: var(--teal-light); font-size: 0.9rem; flex-shrink: 0;
+  }
+
+  /* ── METHOD PHASES ── */
+  .phase-block {
+    border: 1px solid var(--gray-border); padding: 3rem;
+    margin-bottom: 1.5rem;
+  }
+  .phase-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .phase-num {
+    width: 52px; height: 52px; background: var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 1.1rem; font-weight: 500;
+    color: var(--white); flex-shrink: 0;
+  }
+  .phase-header h3 { font-size: 1.3rem; font-weight: 400; color: var(--teal); }
+  .phase-header .subtitle {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    letter-spacing: 0.12em; color: var(--orange); text-transform: uppercase;
+  }
+  .phase-block > p { font-size: 0.98rem; line-height: 1.75; margin-bottom: 2rem; font-weight: 300; }
+  .phase-detail { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+  .detail-col h4 {
+    font-size: 0.72rem; font-family: var(--font-mono);
+    letter-spacing: 0.15em; color: var(--gray-text);
+    text-transform: uppercase; margin-bottom: 0.75rem;
+  }
+  .detail-col ul { list-style: none; padding: 0; }
+  .detail-col ul li {
+    font-size: 0.88rem; line-height: 1.7; font-weight: 300;
+    padding-left: 1.2rem; position: relative;
+  }
+  .detail-col ul li::before {
+    content: '—'; position: absolute; left: 0;
+    color: var(--teal-light); font-size: 0.75rem;
+  }
+  .phase-divider {
+    text-align: center; color: var(--teal-light);
+    font-size: 1.5rem; padding: 0.5rem 0; margin-bottom: 1.5rem;
+  }
+
+  /* ── PRINCIPLE CARDS ── */
+  .principle-card {
+    border: 1px solid var(--gray-border); padding: 2rem;
+  }
+  .principle-card h3 { font-size: 1rem; font-weight: 500; color: var(--teal); margin-bottom: 0.6rem; }
+  .principle-card p { font-size: 0.9rem; line-height: 1.7; font-weight: 300; }
+
+  /* ── FRAMEWORK MODULES ── */
+  .fw-module {
+    border-bottom: 1px solid var(--gray-border); padding: 3.5rem 0;
+  }
+  .fw-module:first-child { padding-top: 0; }
+  .fw-module:last-child { border-bottom: none; }
+  .fw-module-inner {
+    display: grid; grid-template-columns: 3fr 2fr; gap: 4rem; align-items: start;
+  }
+  .fw-module .num {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--teal-light); margin-bottom: 0.75rem; letter-spacing: 0.12em;
+  }
+  .fw-module h2 { font-size: 1.4rem; font-weight: 400; color: var(--teal); margin-bottom: 0.75rem; letter-spacing: -0.01em; }
+  .fw-module .desc { font-size: 0.95rem; line-height: 1.75; margin-bottom: 1.5rem; font-weight: 300; }
+  .fw-module ul { list-style: none; padding: 0; }
+  .fw-module ul li {
+    font-size: 0.88rem; line-height: 1.7; font-weight: 300;
+    padding-left: 1.2rem; position: relative; margin-bottom: 0.3rem;
+  }
+  .fw-module ul li::before {
+    content: '→'; position: absolute; left: 0;
+    color: var(--teal-light); font-size: 0.78rem;
+  }
+  .fw-meta-box {
+    border: 1px solid var(--gray-border); padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .fw-meta-box .label {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.15em; color: var(--orange);
+    text-transform: uppercase; margin-bottom: 0.4rem;
+  }
+  .fw-meta-box .value { font-size: 1.1rem; font-weight: 500; color: var(--teal); }
+  .fw-meta-box .value-p { font-size: 0.88rem; line-height: 1.65; font-weight: 300; }
+
+  /* ── ABOUT ── */
+  .approach-grid {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 0;
+    border: 1px solid var(--gray-border);
+  }
+  .approach-item {
+    padding: 2.5rem; border-right: 1px solid var(--gray-border);
+  }
+  .approach-item:last-child { border-right: none; }
+  .approach-item .icon {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--orange); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .approach-item h3 { font-size: 1rem; font-weight: 500; color: var(--teal); margin-bottom: 0.6rem; }
+  .approach-item p { font-size: 0.88rem; line-height: 1.7; font-weight: 300; }
+
+  .values-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
+  .value-item { padding: 2rem; border: 1px solid var(--gray-border); }
+  .value-item h3 { font-size: 1rem; font-weight: 500; color: var(--teal); margin-bottom: 0.5rem; }
+  .value-item p { font-size: 0.88rem; line-height: 1.7; font-weight: 300; }
+
+  .expertise-list { display: grid; grid-template-columns: repeat(2,1fr); gap: 0; border: 1px solid var(--gray-border); }
+  .expertise-item {
+    padding: 1.5rem 2rem; border-bottom: 1px solid var(--gray-border);
+    border-right: 1px solid var(--gray-border); display: flex; align-items: center; gap: 1rem;
+  }
+  .expertise-item:nth-child(2n) { border-right: none; }
+  .expertise-item:nth-last-child(-n+2) { border-bottom: none; }
+  .expertise-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal-light); flex-shrink: 0; }
+  .expertise-item span { font-size: 0.9rem; font-weight: 400; color: var(--teal); }
+
+  .clients-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--gray-border); border: 1px solid var(--gray-border); }
+  .client-item { background: var(--white); padding: 2rem; font-size: 0.9rem; font-weight: 300; }
+  .client-item strong { display: block; color: var(--teal); font-weight: 500; margin-bottom: 0.25rem; }
+
+  /* ── CONTACT ── */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .contact-info h2 { font-size: 2rem; font-weight: 300; color: var(--teal); letter-spacing: -0.01em; margin-bottom: 1rem; }
+  .contact-info p { font-size: 0.98rem; line-height: 1.75; font-weight: 300; margin-bottom: 1.5rem; }
+  .contact-detail {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.2rem 0; border-bottom: 1px solid var(--gray-border);
+    font-size: 0.9rem;
+  }
+  .contact-detail-label {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.12em; color: var(--orange);
+    text-transform: uppercase; min-width: 80px; padding-top: 2px;
+  }
+  .contact-detail-value { color: var(--teal); font-weight: 400; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.12em; color: var(--gray-text); text-transform: uppercase;
+  }
+  .form-group input, .form-group textarea, .form-group select {
+    border: 1px solid var(--gray-border); padding: 0.85rem 1rem;
+    font-family: var(--font-main); font-size: 0.9rem; color: var(--teal);
+    background: var(--white); outline: none; transition: border-color 0.2s;
+    font-weight: 300;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--teal-light);
+  }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .form-submit {
+    background: var(--teal); color: var(--white);
+    border: none; padding: 1rem 2rem;
+    font-family: var(--font-mono); font-size: 0.85rem;
+    letter-spacing: 0.08em; cursor: pointer;
+    transition: background 0.2s; text-transform: uppercase;
+  }
+  .form-submit:hover { background: var(--teal-light); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--gray-border);
+    background: var(--white); padding: 3rem 0;
+  }
+  .footer-inner {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-brand .name {
+    font-size: 0.9rem; font-weight: 500; letter-spacing: 0.1em;
+    color: var(--teal); text-transform: uppercase;
+    font-family: var(--font-mono);
+  }
+  .footer-brand .tagline {
+    font-size: 0.68rem; color: var(--gray-text); letter-spacing: 0.12em;
+    text-transform: uppercase; font-family: var(--font-mono); margin-top: 0.2rem;
+  }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    letter-spacing: 0.08em; color: var(--gray-text);
+    text-decoration: none; cursor: pointer;
+  }
+  .footer-links a:hover { color: var(--teal); }
+  .footer-copy {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    color: var(--gray-text); letter-spacing: 0.06em;
+  }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--gray-border); }
+
+  /* ── TEAL BAND ── */
+  .teal-band { background: var(--teal); padding: 3.5rem 0; }
+  .teal-band h2 { font-size: 1.5rem; font-weight: 300; color: var(--white); letter-spacing: -0.01em; margin-bottom: 0.75rem; }
+  .teal-band p { color: rgba(255,255,255,0.75); font-size: 0.95rem; font-weight: 300; margin-bottom: 1.5rem; }
+  .btn-white {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--white); color: var(--teal);
+    padding: 0.9rem 2rem; font-size: 0.85rem; font-weight: 500;
+    font-family: var(--font-mono); letter-spacing: 0.06em;
+    text-decoration: none; cursor: pointer; transition: opacity 0.2s;
+    border: none;
+  }
+  .btn-white:hover { opacity: 0.9; }
+
+  /* ── INTEGRATION BOX ── */
+  .integration-box {
+    background: var(--bg-off); border: 1px solid var(--gray-border); padding: 3rem;
+    max-width: 720px;
+  }
+  .integration-box h2 { font-size: 1.4rem; font-weight: 400; color: var(--teal); margin-bottom: 1rem; }
+  .integration-box p { font-size: 0.95rem; line-height: 1.75; font-weight: 300; margin-bottom: 1rem; }
+  .integration-box p:last-of-type { margin-bottom: 1.5rem; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════════════ -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a class="nav-brand" onclick="showPage('home')">
+        <div class="nav-logo">SC</div>
+        <div class="nav-brand-text">
+          <div class="name">Skew</div>
+          <div class="tagline">Clarity. Control. Capability.</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a onclick="showPage('home')" data-page="home" class="active">Home</a>
+        <a onclick="showPage('ai-governance')" data-page="ai-governance">AI Governance</a>
+        <a onclick="showPage('method')" data-page="method">The Skew Method</a>
+        <a onclick="showPage('framework')" data-page="framework">Clarity Framework™</a>
+        <a onclick="showPage('about')" data-page="about">About</a>
+        <a onclick="showPage('contact')" data-page="contact">Contact</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 1: HOME
+══════════════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- Hero -->
+  <div class="container">
+    <section class="hero">
+      <div class="hero-label">Skew Communications</div>
+      <h1>Complexity in.<br><em>Clarity out.</em></h1>
+      <p>We help government organisations align governance, communication, and capability to navigate complex reform.</p>
+      <a class="btn-primary" onclick="showPage('contact')">Start a conversation →</a>
+    </section>
+  </div>
+
+  <!-- What Skew Means -->
+  <section class="border-top">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">What Skew means</div>
+        <h2>When systems drift out of alignment, reform stalls.</h2>
+        <p>Complex systems become misaligned — skewed — over time. Governance, communication, and capability drift out of sync. We bring them back into alignment.</p>
+      </div>
+      <div class="grid-3">
+        <div class="pillar gov">
+          <div class="pillar-accent gov"></div>
+          <h3>Governance Design</h3>
+          <p>Clear structures, decision rights, and accountability frameworks that create the foundation for informed decision-making and effective oversight.</p>
+        </div>
+        <div class="pillar comms">
+          <div class="pillar-accent comms"></div>
+          <h3>Strategic Communication</h3>
+          <p>Communication systems that ensure the right information reaches the right people at the right time — enabling transparency and clarity.</p>
+        </div>
+        <div class="pillar cap">
+          <div class="pillar-accent cap"></div>
+          <h3>Capability Development</h3>
+          <p>The skills, processes, and structures needed to execute reform and sustain change across complex government environments.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Skew Method -->
+  <section class="border-top bg-off">
+    <div class="container">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;">
+        <div>
+          <div class="section-label">The Skew Method</div>
+          <h2 style="font-size:clamp(1.7rem,3vw,2.2rem); font-weight:300; color:var(--teal); margin-bottom:1rem; letter-spacing:-0.015em; line-height:1.2;">Structured. Sequential. Deliberate.</h2>
+          <p style="font-size:1rem; line-height:1.75; font-weight:300; margin-bottom:2rem;">Our three-phase method creates alignment from the foundation up. Governance before communication. Communication before capability. Each phase builds on the last.</p>
+          <a class="btn-text" onclick="showPage('method')">Explore the method →</a>
+        </div>
+        <div class="method-preview">
+          <div class="method-step">
+            <div class="step-num s1">01</div>
+            <div>
+              <h3>Assess</h3>
+              <p>Map stakeholders, define decision rights, establish governance foundations and accountability frameworks.</p>
+            </div>
+          </div>
+          <div class="step-arrow">↓</div>
+          <div class="method-step">
+            <div class="step-num s2">02</div>
+            <div>
+              <h3>Design</h3>
+              <p>Architect communication systems, reporting frameworks, and stakeholder engagement protocols.</p>
+            </div>
+          </div>
+          <div class="step-arrow">↓</div>
+          <div class="method-step">
+            <div class="step-num s3">03</div>
+            <div>
+              <h3>Sustain</h3>
+              <p>Build capability, embed practices, and ensure the reform can operate independently over time.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Governance Teaser -->
+  <section class="border-top">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">AI Governance</div>
+        <h2>Governance architecture for responsible AI adoption.</h2>
+        <p>Government organisations require structured, comprehensive governance to navigate AI adoption responsibly. Our AI Governance framework provides eight integrated components for effective oversight and control.</p>
+      </div>
+      <div class="grid-4">
+        <div class="gov-card"><div class="num">01</div><h3>AI Use Classification</h3><p>Structured taxonomy for categorising AI systems by risk, impact, and regulatory requirements.</p></div>
+        <div class="gov-card"><div class="num">02</div><h3>Decision Rights Matrix</h3><p>Clear allocation of decision-making authority across the full AI lifecycle.</p></div>
+        <div class="gov-card"><div class="num">03</div><h3>Risk Assessment Model</h3><p>Systematic approach to identifying and mitigating AI-related risks across all dimensions.</p></div>
+        <div class="gov-card"><div class="num">04</div><h3>AI Activity Register</h3><p>Centralised repository for tracking all AI initiatives, pilots, and deployments.</p></div>
+        <div class="gov-card"><div class="num">05</div><h3>Procurement Governance</h3><p>Frameworks for acquiring AI systems — vendor evaluation, contracts, and ongoing management.</p></div>
+        <div class="gov-card"><div class="num">06</div><h3>Executive Oversight</h3><p>Structures enabling senior leaders to exercise informed oversight of AI initiatives.</p></div>
+        <div class="gov-card"><div class="num">07</div><h3>Compliance Framework</h3><p>Ensures AI systems meet regulatory requirements and ethical standards throughout their lifecycle.</p></div>
+        <div class="gov-card"><div class="num">08</div><h3>Data Governance</h3><p>Controls for managing data quality, security, privacy, and ethical use in AI systems.</p></div>
+      </div>
+      <div style="margin-top:2.5rem;">
+        <a class="btn-text" onclick="showPage('ai-governance')">Explore AI Governance →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clarity Framework Teaser -->
+  <section class="border-top bg-off">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Clarity Framework™</div>
+        <h2>Modular capability development.</h2>
+        <p>Modular capability development designed to address the specific needs of your organisation. Each module can be delivered independently or as part of a comprehensive engagement.</p>
+      </div>
+      <div class="grid-2">
+        <div class="teaser-card">
+          <div class="section-label" style="margin-bottom:0;">01</div>
+          <h3>Strategic Alignment</h3>
+          <p>Align organisational objectives with reform initiatives and governance structures.</p>
+          <a class="btn-text" onclick="showPage('framework')">Learn more →</a>
+        </div>
+        <div class="teaser-card">
+          <div class="section-label" style="margin-bottom:0;">02</div>
+          <h3>Communication Design</h3>
+          <p>Design communication systems that enable clarity and informed decision-making.</p>
+          <a class="btn-text" onclick="showPage('framework')">Learn more →</a>
+        </div>
+        <div class="teaser-card">
+          <div class="section-label" style="margin-bottom:0;">03</div>
+          <h3>Capability Development</h3>
+          <p>Build the skills and structures needed to execute and sustain complex change.</p>
+          <a class="btn-text" onclick="showPage('framework')">Learn more →</a>
+        </div>
+        <div class="teaser-card">
+          <div class="section-label" style="margin-bottom:0;">04</div>
+          <h3>Implementation Support</h3>
+          <p>Provide hands-on support to ensure reforms are delivered effectively.</p>
+          <a class="btn-text" onclick="showPage('framework')">Learn more →</a>
+        </div>
+      </div>
+      <div style="margin-top:2.5rem;">
+        <a class="btn-text" onclick="showPage('framework')">View the full framework →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section class="border-top">
+    <div class="container">
+      <div class="cta-block">
+        <div class="cta-block-left">
+          <h2>Start a Conversation</h2>
+          <p>We work with government organisations to navigate complex reform. Get in touch to explore how we can help.</p>
+        </div>
+        <div class="cta-block-right">
+          <a class="btn-primary" onclick="showPage('contact')">Contact us →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 2: AI GOVERNANCE
+══════════════════════════════════════════════ -->
+<div class="page" id="page-ai-governance">
+  <div class="container">
+    <section class="hero">
+      <div class="hero-label">AI Governance</div>
+      <h1>Governance architecture<br>for <em>AI adoption.</em></h1>
+      <p>Government organisations require structured, comprehensive governance to navigate AI adoption responsibly. Our AI Governance framework provides the components needed for effective oversight and control.</p>
+      <p class="hero-sub">Each component is designed to integrate with existing governance structures while addressing the unique challenges of AI systems.</p>
+    </section>
+  </div>
+
+  <!-- 8 Component Cards -->
+  <section class="border-top">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Framework components</div>
+        <h2>Eight integrated components.</h2>
+        <p>A comprehensive architecture designed to work together — or to be deployed selectively based on your organisation's current maturity and priorities.</p>
+      </div>
+      <div class="grid-4" style="margin-bottom:3rem;">
+        <div class="gov-card"><div class="num">01</div><h3>AI Use Classification</h3><p>Structured taxonomy for categorising AI systems by risk, impact, and regulatory requirements.</p></div>
+        <div class="gov-card"><div class="num">02</div><h3>Decision Rights Matrix</h3><p>Clear allocation of decision-making authority across AI lifecycle stages.</p></div>
+        <div class="gov-card"><div class="num">03</div><h3>Risk Assessment Model</h3><p>Systematic approach to identifying, evaluating, and mitigating AI-related risks.</p></div>
+        <div class="gov-card"><div class="num">04</div><h3>AI Activity Register</h3><p>Centralised repository for tracking all AI initiatives, pilots, and deployments.</p></div>
+        <div class="gov-card"><div class="num">05</div><h3>Procurement Governance</h3><p>Frameworks for acquiring AI systems and services — vendor evaluation and ongoing management.</p></div>
+        <div class="gov-card"><div class="num">06</div><h3>Executive Oversight</h3><p>Structures enabling senior leaders to exercise informed oversight of AI strategy.</p></div>
+        <div class="gov-card"><div class="num">07</div><h3>Compliance Framework</h3><p>Ensures AI systems meet regulatory requirements throughout their full lifecycle.</p></div>
+        <div class="gov-card"><div class="num">08</div><h3>Data Governance</h3><p>Controls for managing data quality, security, privacy, and ethical use in AI systems.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Component Detail -->
+  <section class="border-top bg-off">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Component detail</div>
+        <h2>What each component delivers.</h2>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">01</div>
+          <div><h2>AI Use Classification</h2></div>
+        </div>
+        <p class="desc">A structured taxonomy for categorising AI systems by risk, impact, and regulatory requirements. Enables consistent evaluation and appropriate governance responses.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Risk-based classification framework</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Impact assessment criteria</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Regulatory mapping</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Use case categorisation</span></div>
+        </div>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">02</div>
+          <div><h2>Decision Rights Matrix</h2></div>
+        </div>
+        <p class="desc">Clear allocation of decision-making authority across AI lifecycle stages. Defines who decides, who is consulted, and who must be informed.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Role-based authority mapping</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Escalation pathways</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Approval thresholds</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Accountability assignments</span></div>
+        </div>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">03</div>
+          <div><h2>Risk Assessment Model</h2></div>
+        </div>
+        <p class="desc">Systematic approach to identifying, evaluating, and mitigating AI-related risks across technical, operational, ethical, and regulatory dimensions.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Multi-dimensional risk framework</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Quantitative and qualitative assessment</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Mitigation strategy templates</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Ongoing monitoring protocols</span></div>
+        </div>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">04</div>
+          <div><h2>AI Activity Register</h2></div>
+        </div>
+        <p class="desc">Centralised repository for tracking all AI initiatives, pilots, and deployments across the organisation. Ensures visibility and oversight.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Lifecycle stage tracking</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Resource allocation visibility</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Performance metrics</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Compliance status monitoring</span></div>
+        </div>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">05</div>
+          <div><h2>Procurement Governance</h2></div>
+        </div>
+        <p class="desc">Frameworks and processes for acquiring AI systems and services. Addresses vendor evaluation, contract terms, and ongoing vendor management.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Vendor assessment criteria</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Contract requirements</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Third-party risk management</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Exit strategy planning</span></div>
+        </div>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">06</div>
+          <div><h2>Executive Oversight</h2></div>
+        </div>
+        <p class="desc">Structures and processes that enable senior leaders to exercise informed oversight of AI initiatives and organisational AI strategy.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Executive briefing frameworks</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Strategic planning integration</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Performance dashboards</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Regular review cadences</span></div>
+        </div>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">07</div>
+          <div><h2>Compliance Framework</h2></div>
+        </div>
+        <p class="desc">Ensures AI systems meet regulatory requirements, ethical standards, and organisational policies throughout their lifecycle.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Regulatory requirement mapping</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Policy compliance checks</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Audit trail maintenance</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Remediation processes</span></div>
+        </div>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">08</div>
+          <div><h2>Data Governance</h2></div>
+        </div>
+        <p class="desc">Controls and processes for managing data used in AI systems, addressing quality, security, privacy, and ethical use.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Data quality standards</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Privacy protection measures</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Security controls</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Ethical use guidelines</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Integration Approach -->
+  <section class="border-top">
+    <div class="container">
+      <div class="cta-block">
+        <div class="cta-block-left">
+          <h2>Integration Approach</h2>
+          <p>These governance components don't operate in isolation. We work with your organisation to integrate them into existing structures, ensuring they complement rather than complicate your governance architecture.</p>
+          <p style="margin-top:0.75rem;">Our implementation approach considers your organisation's maturity, risk appetite, regulatory context, and strategic objectives.</p>
+        </div>
+        <div class="cta-block-right">
+          <a class="btn-primary" onclick="showPage('contact')">Discuss your needs →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 3: THE SKEW METHOD
+══════════════════════════════════════════════ -->
+<div class="page" id="page-method">
+  <div class="container">
+    <section class="hero">
+      <div class="hero-label">The Skew Method</div>
+      <h1>Structured.<br>Sequential.<br><em>Deliberate.</em></h1>
+      <p>A structured approach to aligning governance, communication, and capability in complex government reform. Designed to create lasting change.</p>
+    </section>
+  </div>
+
+  <!-- Why This Sequence -->
+  <section class="border-top">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Why sequence matters</div>
+        <h2>Why This Sequence Matters</h2>
+        <p>Complex reform fails when organisations try to build capability without clear governance, or establish communication systems without defined decision rights. Our method follows a deliberate sequence that creates alignment from the foundation up.</p>
+      </div>
+
+      <div class="phase-block">
+        <div class="phase-header">
+          <div class="phase-num" style="background:var(--orange);">1</div>
+          <div>
+            <h3>Governance — Establish Structure</h3>
+            <div class="subtitle">Phase 1 / Assess</div>
+          </div>
+        </div>
+        <p>We begin by establishing clear governance structures, decision rights, and accountability frameworks. This creates the foundation for informed decision-making and effective oversight.</p>
+        <div class="phase-detail">
+          <div class="detail-col">
+            <h4>Key Activities</h4>
+            <ul>
+              <li>Stakeholder mapping and engagement</li>
+              <li>Decision rights definition</li>
+              <li>Accountability framework design</li>
+              <li>Governance structure implementation</li>
+            </ul>
+          </div>
+          <div class="detail-col">
+            <h4>Expected Outcomes</h4>
+            <ul>
+              <li>Clear decision-making authority</li>
+              <li>Defined escalation pathways</li>
+              <li>Established oversight mechanisms</li>
+              <li>Documented governance model</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-divider">↓</div>
+
+      <div class="phase-block">
+        <div class="phase-header">
+          <div class="phase-num" style="background:var(--teal-light);">2</div>
+          <div>
+            <h3>Communication — Enable Clarity</h3>
+            <div class="subtitle">Phase 2 / Design</div>
+          </div>
+        </div>
+        <p>With governance in place, we design communication systems that ensure the right information reaches the right people at the right time. This enables transparency and informed decision-making.</p>
+        <div class="phase-detail">
+          <div class="detail-col">
+            <h4>Key Activities</h4>
+            <ul>
+              <li>Information flow mapping</li>
+              <li>Communication channel design</li>
+              <li>Reporting framework development</li>
+              <li>Stakeholder engagement protocols</li>
+            </ul>
+          </div>
+          <div class="detail-col">
+            <h4>Expected Outcomes</h4>
+            <ul>
+              <li>Transparent information flows</li>
+              <li>Effective reporting mechanisms</li>
+              <li>Informed stakeholder base</li>
+              <li>Reduced communication gaps</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-divider">↓</div>
+
+      <div class="phase-block">
+        <div class="phase-header">
+          <div class="phase-num" style="background:var(--teal);">3</div>
+          <div>
+            <h3>Capability — Build and Sustain</h3>
+            <div class="subtitle">Phase 3 / Sustain</div>
+          </div>
+        </div>
+        <p>Finally, we build the capabilities needed to execute reform and sustain change. This includes skills development, process implementation, and change management support.</p>
+        <div class="phase-detail">
+          <div class="detail-col">
+            <h4>Key Activities</h4>
+            <ul>
+              <li>Capability gap analysis</li>
+              <li>Training and development</li>
+              <li>Process design and implementation</li>
+              <li>Change management support</li>
+            </ul>
+          </div>
+          <div class="detail-col">
+            <h4>Expected Outcomes</h4>
+            <ul>
+              <li>Enhanced organisational capability</li>
+              <li>Sustainable operating models</li>
+              <li>Skilled workforce</li>
+              <li>Embedded change practices</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guiding Principles -->
+  <section class="border-top bg-off">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Guiding principles</div>
+        <h2>Guiding Principles</h2>
+        <p>Our method is guided by principles that ensure we deliver sustainable outcomes tailored to your organisation's needs.</p>
+      </div>
+      <div class="grid-2">
+        <div class="principle-card"><h3>Structured</h3><p>Every engagement follows a deliberate sequence. Governance before communication. Communication before capability.</p></div>
+        <div class="principle-card"><h3>Context-Aware</h3><p>We adapt our approach to your organisation's maturity, culture, and constraints. No off-the-shelf solutions.</p></div>
+        <div class="principle-card"><h3>Outcome-Focused</h3><p>We measure success by sustainable change, not deliverables. Our work is complete when your organisation can sustain the reform.</p></div>
+        <div class="principle-card"><h3>Collaborative</h3><p>We work alongside your teams, building internal capability while delivering results. We enable, not replace.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How We Work -->
+  <section class="border-top">
+    <div class="container">
+      <div class="cta-block">
+        <div class="cta-block-left">
+          <h2>How We Work</h2>
+          <p>Our engagements are scoped to your organisation's specific needs. We may work across all three phases or focus on specific areas where alignment is most critical.</p>
+          <p style="margin-top:0.75rem;">We typically work through embedded teams, partnering with your staff to ensure knowledge transfer and sustainable outcomes.</p>
+        </div>
+        <div class="cta-block-right">
+          <a class="btn-primary" onclick="showPage('contact')">Discuss your reform challenge →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 4: CLARITY FRAMEWORK™
+══════════════════════════════════════════════ -->
+<div class="page" id="page-framework">
+  <div class="container">
+    <section class="hero">
+      <div class="hero-label">Clarity Framework™</div>
+      <h1>Modular capability<br><em>development.</em></h1>
+      <p>Modular capability development designed to address the specific needs of your organisation. Each module can be delivered independently or as part of a comprehensive engagement.</p>
+      <p class="hero-sub">The framework is flexible, allowing us to focus on the areas where alignment is most critical for your reform success.</p>
+    </section>
+  </div>
+
+  <!-- Module Detail -->
+  <section class="border-top">
+    <div class="container">
+      <div class="fw-module">
+        <div class="fw-module-inner">
+          <div>
+            <div class="num">01</div>
+            <h2>Strategic Alignment</h2>
+            <p class="desc">Align organisational objectives with reform initiatives and governance structures.</p>
+            <h4 style="font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray-text);margin-bottom:0.75rem;font-family:var(--font-mono);">Key Components</h4>
+            <ul>
+              <li>Stakeholder analysis and mapping</li>
+              <li>Objective alignment workshops</li>
+              <li>Strategic planning integration</li>
+              <li>Success metrics definition</li>
+            </ul>
+          </div>
+          <div>
+            <div class="fw-meta-box"><div class="label">Typical Duration</div><div class="value">4–6 weeks</div></div>
+            <div class="fw-meta-box"><div class="label">Expected Outcome</div><div class="value-p">Clear line of sight from strategic objectives to reform activities, with engaged stakeholders and defined success criteria.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fw-module">
+        <div class="fw-module-inner">
+          <div>
+            <div class="num">02</div>
+            <h2>Communication Design</h2>
+            <p class="desc">Design communication systems that enable clarity and informed decision-making.</p>
+            <h4 style="font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray-text);margin-bottom:0.75rem;font-family:var(--font-mono);">Key Components</h4>
+            <ul>
+              <li>Information flow analysis</li>
+              <li>Communication channel design</li>
+              <li>Reporting framework development</li>
+              <li>Stakeholder engagement protocols</li>
+            </ul>
+          </div>
+          <div>
+            <div class="fw-meta-box"><div class="label">Typical Duration</div><div class="value">6–8 weeks</div></div>
+            <div class="fw-meta-box"><div class="label">Expected Outcome</div><div class="value-p">Transparent, effective communication systems that ensure the right information reaches the right people at the right time.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fw-module">
+        <div class="fw-module-inner">
+          <div>
+            <div class="num">03</div>
+            <h2>Capability Development</h2>
+            <p class="desc">Build the skills and structures needed to execute and sustain complex change.</p>
+            <h4 style="font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray-text);margin-bottom:0.75rem;font-family:var(--font-mono);">Key Components</h4>
+            <ul>
+              <li>Capability gap analysis</li>
+              <li>Training program design</li>
+              <li>Process development</li>
+              <li>Knowledge management systems</li>
+            </ul>
+          </div>
+          <div>
+            <div class="fw-meta-box"><div class="label">Typical Duration</div><div class="value">8–12 weeks</div></div>
+            <div class="fw-meta-box"><div class="label">Expected Outcome</div><div class="value-p">Enhanced organisational capability with skilled teams, documented processes, and sustainable operating models.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fw-module">
+        <div class="fw-module-inner">
+          <div>
+            <div class="num">04</div>
+            <h2>Implementation Support</h2>
+            <p class="desc">Provide hands-on support to ensure reforms are delivered effectively.</p>
+            <h4 style="font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray-text);margin-bottom:0.75rem;font-family:var(--font-mono);">Key Components</h4>
+            <ul>
+              <li>Embedded delivery teams</li>
+              <li>Change management support</li>
+              <li>Risk monitoring and mitigation</li>
+              <li>Continuous improvement cycles</li>
+            </ul>
+          </div>
+          <div>
+            <div class="fw-meta-box"><div class="label">Typical Duration</div><div class="value">Ongoing</div></div>
+            <div class="fw-meta-box"><div class="label">Expected Outcome</div><div class="value-p">Successfully executed reforms with embedded practices that enable ongoing adaptation and improvement.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Framework Applications -->
+  <section class="border-top bg-off">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Applications</div>
+        <h2>Framework Applications</h2>
+        <p>The Clarity Framework adapts to different reform contexts. Here are some examples of how we apply the modules to common government challenges.</p>
+      </div>
+      <div class="grid-2">
+        <div class="principle-card"><h3>Digital Transformation</h3><p>Focus on governance structures for technology decisions, communication systems for change management, and capability building for new digital tools.</p></div>
+        <div class="principle-card"><h3>AI Adoption</h3><p>Establish AI governance frameworks, design transparent reporting on AI initiatives, and build organisational AI literacy.</p></div>
+        <div class="principle-card"><h3>Organisational Restructure</h3><p>Clarify decision rights in new structures, design communication for transitions, and develop capabilities for new operating models.</p></div>
+        <div class="principle-card"><h3>Policy Reform</h3><p>Align stakeholders around policy objectives, establish clear communication on policy intent, and build implementation capability.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tailored CTA -->
+  <section class="border-top">
+    <div class="container">
+      <div class="cta-block">
+        <div class="cta-block-left">
+          <h2>Tailored to Your Context</h2>
+          <p>Every organisation faces unique challenges. We don't apply the framework mechanically — we adapt it to your context, maturity, constraints, and objectives.</p>
+          <p style="margin-top:0.75rem;">Some organisations need all four modules; others need focused intervention in one or two areas. Our goal is sustainable impact, not comprehensive coverage.</p>
+        </div>
+        <div class="cta-block-right">
+          <a class="btn-primary" onclick="showPage('contact')">Explore how we can help →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 5: ABOUT
+══════════════════════════════════════════════ -->
+<div class="page" id="page-about">
+  <div class="container">
+    <section class="hero">
+      <div class="hero-label">About</div>
+      <h1>We help government<br>navigate <em>complex reform.</em></h1>
+      <p>A boutique advisory firm focused exclusively on helping government organisations navigate complex reform. We work at the intersection of governance, communication, and capability.</p>
+      <p class="hero-sub">Our name reflects our core insight: complex systems become misaligned — skewed — over time. When governance, communication, and capability drift out of sync, reform stalls. We bring them back into alignment.</p>
+    </section>
+  </div>
+
+  <!-- Our Approach -->
+  <section class="border-top">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Our approach</div>
+        <h2>Our Approach</h2>
+        <p>We don't work like traditional consulting firms. We embed with your teams, focus on sustainable outcomes, and build capability as we deliver results.</p>
+      </div>
+      <div class="approach-grid">
+        <div class="approach-item">
+          <div class="icon">01 / Embedded</div>
+          <h3>Embedded Delivery</h3>
+          <p>We work alongside your teams, not at arm's length. This ensures knowledge transfer and builds sustainable internal capability throughout the engagement.</p>
+        </div>
+        <div class="approach-item">
+          <div class="icon">02 / Focused</div>
+          <h3>Government-Exclusive</h3>
+          <p>We work exclusively with government organisations. This focus means we understand APS culture, procurement processes, and the unique constraints of public sector reform.</p>
+        </div>
+        <div class="approach-item">
+          <div class="icon">03 / Independent</div>
+          <h3>Vendor-Neutral</h3>
+          <p>We are fully independent and vendor-neutral. Our recommendations are based on your needs, not commercial relationships with technology providers or platform vendors.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What Guides Us -->
+  <section class="border-top bg-off">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">What guides us</div>
+        <h2>What Guides Us</h2>
+        <p>The values and principles that shape how we work and what we deliver.</p>
+      </div>
+      <div class="values-grid">
+        <div class="value-item">
+          <h3>Clarity Over Complexity</h3>
+          <p>We believe complex problems require clear thinking, not more complexity. Every deliverable should simplify, not compound, the challenge at hand.</p>
+        </div>
+        <div class="value-item">
+          <h3>Sustainable Impact</h3>
+          <p>We measure success by whether change endures after we leave. Our engagement model is designed to build capability, not dependency.</p>
+        </div>
+        <div class="value-item">
+          <h3>Evidence-Informed</h3>
+          <p>Our frameworks and recommendations are grounded in evidence — from organisational theory, governance research, and two decades of public sector experience.</p>
+        </div>
+        <div class="value-item">
+          <h3>Structural Integrity</h3>
+          <p>We design governance and communication systems with structural integrity — frameworks that hold under pressure, not just in ideal conditions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Areas of Expertise -->
+  <section class="border-top">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Expertise</div>
+        <h2>Areas of Expertise</h2>
+      </div>
+      <div class="expertise-list">
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Governance Design</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>AI Governance Architecture</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Strategic Communication</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Capability Development</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Complex Reform Navigation</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Inclusive Communication</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Training Design and Delivery</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Knowledge Management</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Change Management</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Stakeholder Engagement</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who We Work With -->
+  <section class="border-top bg-off">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Who we work with</div>
+        <h2>Who We Work With</h2>
+        <p>We work with government organisations at the federal and territory level, from frontline teams to statutory bodies and senior executive groups.</p>
+      </div>
+      <div class="clients-grid">
+        <div class="client-item"><strong>Commonwealth Departments</strong>APS agencies navigating policy reform, digital transformation, or organisational change.</div>
+        <div class="client-item"><strong>Statutory Bodies</strong>Independent authorities requiring governance architecture and accountability frameworks.</div>
+        <div class="client-item"><strong>Territory Government</strong>ACT Government agencies and local government bodies navigating service reform.</div>
+        <div class="client-item"><strong>Senior Executive Teams</strong>SES leaders and executive groups requiring structured governance and AI oversight.</div>
+        <div class="client-item"><strong>Reform Program Teams</strong>Cross-agency teams delivering complex, multi-stakeholder reform programs.</div>
+        <div class="client-item"><strong>EL1 / EL2 Cohorts</strong>Emerging leaders requiring targeted capability development in governance and communication.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="border-top">
+    <div class="container">
+      <div class="cta-block">
+        <div class="cta-block-left">
+          <h2>Work With Us</h2>
+          <p>If you're navigating complex government reform and need structured support, we'd like to hear from you.</p>
+        </div>
+        <div class="cta-block-right">
+          <a class="btn-primary" onclick="showPage('contact')">Get in touch →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 6: CONTACT
+══════════════════════════════════════════════ -->
+<div class="page" id="page-contact">
+  <div class="container">
+    <section class="hero" style="padding-bottom:3rem;">
+      <div class="hero-label">Contact</div>
+      <h1>Navigating<br><em>complex reform?</em></h1>
+      <p>We work with government organisations to navigate complex reform. Get in touch to explore how Skew Communications can help.</p>
+    </section>
+  </div>
+
+  <section class="border-top">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="section-label">Get in touch</div>
+          <h2>Let's start a conversation.</h2>
+          <p>We're selective about our engagements. We work best with organisations that are serious about sustainable reform and willing to embed the work into their operating model.</p>
+          <p>Tell us about your reform challenge and we'll let you know if and how we can help.</p>
+
+          <div class="contact-detail">
+            <div class="contact-detail-label">Location</div>
+            <div class="contact-detail-value">Canberra, Australian Capital Territory</div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-label">Service</div>
+            <div class="contact-detail-value">Australian Government — Federal &amp; Territory</div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-label">Panel</div>
+            <div class="contact-detail-value">BuyICT Panel Supplier</div>
+          </div>
+          <div class="contact-detail" style="border-bottom:none;">
+            <div class="contact-detail-label">Response</div>
+            <div class="contact-detail-value">Within two business days</div>
+          </div>
+
+          <div style="margin-top:3rem;">
+            <div class="section-label">What to expect</div>
+            <p style="font-size:0.9rem; line-height:1.75; margin-top:0.5rem;">An initial conversation to understand your context and objectives. If there's a good fit, we'll propose a scoped engagement. No obligation, no hard sell.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-label">Enquiry form</div>
+          <div class="contact-form" style="margin-top:1rem;">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label>Organisation</label>
+              <input type="text" placeholder="Your agency or department">
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="your@email.gov.au">
+            </div>
+            <div class="form-group">
+              <label>Role</label>
+              <input type="text" placeholder="Your position title">
+            </div>
+            <div class="form-group">
+              <label>Nature of Enquiry</label>
+              <select>
+                <option value="">Select one</option>
+                <option>AI Governance Architecture</option>
+                <option>Clarity Framework™</option>
+                <option>The Skew Method</option>
+                <option>General Advisory</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Tell us about your reform challenge</label>
+              <textarea placeholder="Briefly describe your context, the challenge you're navigating, and what you're hoping to achieve…"></textarea>
+            </div>
+            <button class="form-submit">Submit Enquiry →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teal Band -->
+  <div class="teal-band" style="margin-top:5rem;">
+    <div class="container">
+      <h2>Clarity. Control. Capability.</h2>
+      <p>Skew Communications — boutique advisory for government reform.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="name">Skew Communications</div>
+        <div class="tagline">Clarity. Control. Capability.</div>
+      </div>
+      <div class="footer-links">
+        <a onclick="showPage('home')">Home</a>
+        <a onclick="showPage('ai-governance')">AI Governance</a>
+        <a onclick="showPage('method')">The Skew Method</a>
+        <a onclick="showPage('framework')">Clarity Framework™</a>
+        <a onclick="showPage('about')">About</a>
+        <a onclick="showPage('contact')">Contact</a>
+      </div>
+      <div class="footer-copy">© 2025 Skew Communications</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function showPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    const target = document.getElementById('page-' + page);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    const navLink = document.querySelector('[data-page="' + page + '"]');
+    if (navLink) navLink.classList.add('active');
+  }
+</script>
+</body>
+</html>
