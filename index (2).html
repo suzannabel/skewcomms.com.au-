@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skew — Clarity. Control. Capability.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal:        #2d7d7d;
+    --teal-light:  #75c0ac;
+    --orange:      #e28e4e;
+    --gray-text:   #848484;
+    --gray-border: #e5e5e5;
+    --bg-off:      #fafafa;
+    --white:       #ffffff;
+    --font-main:   'DM Sans', sans-serif;
+    --font-mono:   'DM Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: var(--font-main);
+    color: var(--gray-text);
+    background: var(--white);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 1160px; margin: 0 auto; padding: 0 2.5rem; }
+
+  /* ── NAV ── */
+  nav {
+    border-bottom: 1px solid var(--gray-border);
+    background: var(--white);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 72px;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none; cursor: pointer;
+  }
+  .nav-logo {
+    width: 52px; height: 52px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #ffffff;
+  }
+  .nav-logo img {
+    width: 100%; height: 100%; object-fit: contain;
+  }
+  .nav-brand-text .name {
+    font-size: 1.1rem; font-weight: 500; letter-spacing: 0.1em;
+    color: var(--teal); line-height: 1.1; text-transform: uppercase;
+  }
+  .nav-brand-text .tagline {
+    font-size: 0.65rem; letter-spacing: 0.14em; color: var(--gray-text);
+    text-transform: uppercase; font-family: var(--font-mono);
+  }
+  .nav-links { display: flex; align-items: center; gap: 2.2rem; }
+  .nav-links a {
+    font-size: 0.82rem; letter-spacing: 0.04em; color: var(--gray-text);
+    text-decoration: none; transition: color 0.2s; cursor: pointer;
+    font-family: var(--font-mono);
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--teal); }
+
+  /* ── PAGES ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── HERO ── */
+  .hero { padding: 7rem 0 5rem; }
+  .hero-label {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    letter-spacing: 0.18em; color: var(--orange);
+    text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.8rem, 5.5vw, 4.2rem);
+    font-weight: 300; letter-spacing: -0.02em; line-height: 1.05;
+    color: var(--teal); margin-bottom: 1.8rem;
+  }
+  .hero h1 em { font-style: normal; font-weight: 500; }
+  .hero p {
+    font-size: 1.15rem; max-width: 540px;
+    color: var(--gray-text); margin-bottom: 2.5rem; line-height: 1.75;
+    font-weight: 300;
+  }
+  .hero-sub {
+    font-size: 0.9rem; max-width: 560px;
+    color: var(--gray-text); margin-top: -1.5rem; margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+
+  /* ── BUTTONS ── */
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--teal); color: var(--white);
+    padding: 0.9rem 2rem; font-size: 0.88rem; font-weight: 500;
+    font-family: var(--font-mono); letter-spacing: 0.06em;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--teal-light); }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    border: 1px solid var(--teal); color: var(--teal);
+    padding: 0.9rem 2rem; font-size: 0.88rem; font-weight: 500;
+    font-family: var(--font-mono); letter-spacing: 0.06em;
+    text-decoration: none; cursor: pointer;
+    transition: all 0.2s; background: transparent;
+  }
+  .btn-outline:hover { background: var(--teal); color: var(--white); }
+  .btn-text {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    color: var(--teal); font-size: 0.88rem; font-weight: 500;
+    font-family: var(--font-mono); letter-spacing: 0.05em;
+    text-decoration: none; cursor: pointer; transition: color 0.2s;
+  }
+  .btn-text:hover { color: var(--teal-light); }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 0; }
+  section.border-top { border-top: 1px solid var(--gray-border); }
+  section.bg-off { background: var(--bg-off); }
+  section.bg-teal { background: var(--teal); }
+
+  .section-label {
+    font-size: 0.72rem; font-family: var(--font-mono);
+    letter-spacing: 0.18em; color: var(--orange);
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .section-header { max-width: 620px; margin-bottom: 3.5rem; }
+  .section-header h2 {
+    font-size: clamp(1.7rem, 3vw, 2.2rem); font-weight: 300;
+    color: var(--teal); margin-bottom: 1rem; letter-spacing: -0.015em; line-height: 1.2;
+  }
+  .section-header p { font-size: 1rem; line-height: 1.75; font-weight: 300; }
+
+  /* ── GRIDS ── */
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 3rem; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 2rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; }
+
+  /* ── HOME: PILLARS ── */
+  .pillar { padding: 0; }
+  .pillar-accent {
+    width: 2px; height: 48px; margin-bottom: 1.5rem;
+  }
+  .pillar-accent.gov { background: var(--orange); }
+  .pillar-accent.comms { background: var(--teal-light); }
+  .pillar-accent.cap { background: var(--teal); }
+  .pillar h3 {
+    font-size: 1.05rem; font-weight: 500; margin-bottom: 0.75rem;
+    letter-spacing: 0.01em;
+  }
+  .pillar.gov h3 { color: var(--orange); }
+  .pillar.comms h3 { color: var(--teal-light); }
+  .pillar.cap h3 { color: var(--teal); }
+  .pillar p { font-size: 0.95rem; line-height: 1.75; font-weight: 300; }
+
+  /* ── HOME: METHOD PREVIEW ── */
+  .method-preview {
+    border: 1px solid var(--gray-border);
+    padding: 3rem; max-width: 520px;
+  }
+  .method-step { display: flex; align-items: flex-start; gap: 1.5rem; margin-bottom: 0; }
+  .step-num {
+    flex-shrink: 0; width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.95rem; font-weight: 500; color: var(--white);
+    font-family: var(--font-mono);
+  }
+  .step-num.s1 { background: var(--orange); }
+  .step-num.s2 { background: var(--teal-light); }
+  .step-num.s3 { background: var(--teal); }
+  .step-arrow { text-align: left; padding-left: 1.5rem; color: var(--gray-border); font-size: 1rem; padding-top: 0.4rem; padding-bottom: 0.4rem; }
+  .method-step h3 { font-size: 1rem; font-weight: 500; color: var(--teal); margin-bottom: 0.2rem; }
+  .method-step p { font-size: 0.88rem; line-height: 1.6; font-weight: 300; }
+
+  /* ── HOME: TEASER CARDS ── */
+  .teaser-card {
+    border: 1px solid var(--gray-border); padding: 2.5rem;
+    display: flex; flex-direction: column; gap: 1rem;
+    transition: border-color 0.2s;
+  }
+  .teaser-card:hover { border-color: var(--teal-light); }
+  .teaser-card h3 { font-size: 1.15rem; font-weight: 500; color: var(--teal); }
+  .teaser-card p { font-size: 0.9rem; line-height: 1.7; flex: 1; font-weight: 300; }
+
+  /* ── CTA BLOCK ── */
+  .cta-block {
+    border: 1px solid var(--gray-border); padding: 4rem;
+    display: flex; align-items: center; gap: 4rem;
+  }
+  .cta-block-left { flex: 1; }
+  .cta-block h2 {
+    font-size: 1.8rem; font-weight: 300; color: var(--teal);
+    letter-spacing: -0.01em; margin-bottom: 0.75rem;
+  }
+  .cta-block p { font-size: 0.98rem; line-height: 1.75; font-weight: 300; }
+  .cta-block-right { flex-shrink: 0; }
+
+  /* ── AI GOVERNANCE CARDS ── */
+  .gov-card {
+    border: 1px solid var(--gray-border); padding: 2rem;
+    transition: border-color 0.2s;
+  }
+  .gov-card:hover { border-color: var(--teal-light); }
+  .gov-card .num {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--orange); margin-bottom: 0.75rem; letter-spacing: 0.1em;
+  }
+  .gov-card h3 { font-size: 0.98rem; font-weight: 500; color: var(--teal); margin-bottom: 0.6rem; }
+  .gov-card p { font-size: 0.85rem; line-height: 1.65; font-weight: 300; }
+
+  /* ── AI COMPONENT DETAIL ── */
+  .ai-component {
+    border-bottom: 1px solid var(--gray-border);
+    padding: 3rem 0;
+  }
+  .ai-component:last-child { border-bottom: none; }
+  .ai-component-header { display: flex; align-items: flex-start; gap: 2rem; margin-bottom: 1.5rem; }
+  .ai-component-num {
+    width: 48px; height: 48px; background: var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 0.85rem;
+    color: var(--white); flex-shrink: 0;
+  }
+  .ai-component h2 { font-size: 1.3rem; font-weight: 400; color: var(--teal); letter-spacing: -0.01em; }
+  .ai-component .desc { font-size: 0.98rem; line-height: 1.75; margin-bottom: 1.5rem; font-weight: 300; max-width: 640px; }
+  .capabilities-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem;
+    max-width: 560px;
+  }
+  .capability-item {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.88rem; font-weight: 300;
+  }
+  .check {
+    color: var(--teal-light); font-size: 0.9rem; flex-shrink: 0;
+  }
+
+  /* ── METHOD PHASES ── */
+  .phase-block {
+    border: 1px solid var(--gray-border); padding: 3rem;
+    margin-bottom: 1.5rem;
+  }
+  .phase-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .phase-num {
+    width: 52px; height: 52px; background: var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 1.1rem; font-weight: 500;
+    color: var(--white); flex-shrink: 0;
+  }
+  .phase-header h3 { font-size: 1.3rem; font-weight: 400; color: var(--teal); }
+  .phase-header .subtitle {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    letter-spacing: 0.12em; color: var(--orange); text-transform: uppercase;
+  }
+  .phase-block > p { font-size: 0.98rem; line-height: 1.75; margin-bottom: 2rem; font-weight: 300; }
+  .phase-detail { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+  .detail-col h4 {
+    font-size: 0.72rem; font-family: var(--font-mono);
+    letter-spacing: 0.15em; color: var(--gray-text);
+    text-transform: uppercase; margin-bottom: 0.75rem;
+  }
+  .detail-col ul { list-style: none; padding: 0; }
+  .detail-col ul li {
+    font-size: 0.88rem; line-height: 1.7; font-weight: 300;
+    padding-left: 1.2rem; position: relative;
+  }
+  .detail-col ul li::before {
+    content: '—'; position: absolute; left: 0;
+    color: var(--teal-light); font-size: 0.75rem;
+  }
+  .phase-divider {
+    text-align: center; color: var(--teal-light);
+    font-size: 1.5rem; padding: 0.5rem 0; margin-bottom: 1.5rem;
+  }
+
+  /* ── PRINCIPLE CARDS ── */
+  .principle-card {
+    border: 1px solid var(--gray-border); padding: 2rem;
+  }
+  .principle-card h3 { font-size: 1rem; font-weight: 500; color: var(--teal); margin-bottom: 0.6rem; }
+  .principle-card p { font-size: 0.9rem; line-height: 1.7; font-weight: 300; }
+
+  /* ── FRAMEWORK MODULES ── */
+  .fw-module {
+    border-bottom: 1px solid var(--gray-border); padding: 3.5rem 0;
+  }
+  .fw-module:first-child { padding-top: 0; }
+  .fw-module:last-child { border-bottom: none; }
+  .fw-module-inner {
+    display: grid; grid-template-columns: 3fr 2fr; gap: 4rem; align-items: start;
+  }
+  .fw-module .num {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--teal-light); margin-bottom: 0.75rem; letter-spacing: 0.12em;
+  }
+  .fw-module h2 { font-size: 1.4rem; font-weight: 400; color: var(--teal); margin-bottom: 0.75rem; letter-spacing: -0.01em; }
+  .fw-module .desc { font-size: 0.95rem; line-height: 1.75; margin-bottom: 1.5rem; font-weight: 300; }
+  .fw-module ul { list-style: none; padding: 0; }
+  .fw-module ul li {
+    font-size: 0.88rem; line-height: 1.7; font-weight: 300;
+    padding-left: 1.2rem; position: relative; margin-bottom: 0.3rem;
+  }
+  .fw-module ul li::before {
+    content: '→'; position: absolute; left: 0;
+    color: var(--teal-light); font-size: 0.78rem;
+  }
+  .fw-meta-box {
+    border: 1px solid var(--gray-border); padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .fw-meta-box .label {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.15em; color: var(--orange);
+    text-transform: uppercase; margin-bottom: 0.4rem;
+  }
+  .fw-meta-box .value { font-size: 1.1rem; font-weight: 500; color: var(--teal); }
+  .fw-meta-box .value-p { font-size: 0.88rem; line-height: 1.65; font-weight: 300; }
+
+  /* ── ABOUT ── */
+  .approach-grid {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 0;
+    border: 1px solid var(--gray-border);
+  }
+  .approach-item {
+    padding: 2.5rem; border-right: 1px solid var(--gray-border);
+  }
+  .approach-item:last-child { border-right: none; }
+  .approach-item .icon {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--orange); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .approach-item h3 { font-size: 1rem; font-weight: 500; color: var(--teal); margin-bottom: 0.6rem; }
+  .approach-item p { font-size: 0.88rem; line-height: 1.7; font-weight: 300; }
+
+  .values-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
+  .value-item { padding: 2rem; border: 1px solid var(--gray-border); }
+  .value-item h3 { font-size: 1rem; font-weight: 500; color: var(--teal); margin-bottom: 0.5rem; }
+  .value-item p { font-size: 0.88rem; line-height: 1.7; font-weight: 300; }
+
+  .expertise-list { display: grid; grid-template-columns: repeat(2,1fr); gap: 0; border: 1px solid var(--gray-border); }
+  .expertise-item {
+    padding: 1.5rem 2rem; border-bottom: 1px solid var(--gray-border);
+    border-right: 1px solid var(--gray-border); display: flex; align-items: center; gap: 1rem;
+  }
+  .expertise-item:nth-child(2n) { border-right: none; }
+  .expertise-item:nth-last-child(-n+2) { border-bottom: none; }
+  .expertise-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal-light); flex-shrink: 0; }
+  .expertise-item span { font-size: 0.9rem; font-weight: 400; color: var(--teal); }
+
+  .clients-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--gray-border); border: 1px solid var(--gray-border); }
+  .client-item { background: var(--white); padding: 2rem; font-size: 0.9rem; font-weight: 300; }
+  .client-item strong { display: block; color: var(--teal); font-weight: 500; margin-bottom: 0.25rem; }
+
+  /* ── CONTACT ── */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .contact-info h2 { font-size: 2rem; font-weight: 300; color: var(--teal); letter-spacing: -0.01em; margin-bottom: 1rem; }
+  .contact-info p { font-size: 0.98rem; line-height: 1.75; font-weight: 300; margin-bottom: 1.5rem; }
+  .contact-detail {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.2rem 0; border-bottom: 1px solid var(--gray-border);
+    font-size: 0.9rem;
+  }
+  .contact-detail-label {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.12em; color: var(--orange);
+    text-transform: uppercase; min-width: 80px; padding-top: 2px;
+  }
+  .contact-detail-value { color: var(--teal); font-weight: 400; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.12em; color: var(--gray-text); text-transform: uppercase;
+  }
+  .form-group input, .form-group textarea, .form-group select {
+    border: 1px solid var(--gray-border); padding: 0.85rem 1rem;
+    font-family: var(--font-main); font-size: 0.9rem; color: var(--teal);
+    background: var(--white); outline: none; transition: border-color 0.2s;
+    font-weight: 300;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--teal-light);
+  }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .form-submit {
+    background: var(--teal); color: var(--white);
+    border: none; padding: 1rem 2rem;
+    font-family: var(--font-mono); font-size: 0.85rem;
+    letter-spacing: 0.08em; cursor: pointer;
+    transition: background 0.2s; text-transform: uppercase;
+  }
+  .form-submit:hover { background: var(--teal-light); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--gray-border);
+    background: var(--white); padding: 3rem 0;
+  }
+  .footer-inner {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-brand .name {
+    font-size: 0.9rem; font-weight: 500; letter-spacing: 0.1em;
+    color: var(--teal); text-transform: uppercase;
+    font-family: var(--font-mono);
+  }
+  .footer-brand .tagline {
+    font-size: 0.68rem; color: var(--gray-text); letter-spacing: 0.12em;
+    text-transform: uppercase; font-family: var(--font-mono); margin-top: 0.2rem;
+  }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    letter-spacing: 0.08em; color: var(--gray-text);
+    text-decoration: none; cursor: pointer;
+  }
+  .footer-links a:hover { color: var(--teal); }
+  .footer-copy {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    color: var(--gray-text); letter-spacing: 0.06em;
+  }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--gray-border); }
+
+  /* ── TEAL BAND ── */
+  .teal-band { background: var(--teal); padding: 3.5rem 0; }
+  .teal-band h2 { font-size: 1.5rem; font-weight: 300; color: var(--white); letter-spacing: -0.01em; margin-bottom: 0.75rem; }
+  .teal-band p { color: rgba(255,255,255,0.75); font-size: 0.95rem; font-weight: 300; margin-bottom: 1.5rem; }
+  .btn-white {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--white); color: var(--teal);
+    padding: 0.9rem 2rem; font-size: 0.85rem; font-weight: 500;
+    font-family: var(--font-mono); letter-spacing: 0.06em;
+    text-decoration: none; cursor: pointer; transition: opacity 0.2s;
+    border: none;
+  }
+  .btn-white:hover { opacity: 0.9; }
+
+  /* ── INTEGRATION BOX ── */
+  .integration-box {
+    background: var(--bg-off); border: 1px solid var(--gray-border); padding: 3rem;
+    max-width: 720px;
+  }
+  .integration-box h2 { font-size: 1.4rem; font-weight: 400; color: var(--teal); margin-bottom: 1rem; }
+  .integration-box p { font-size: 0.95rem; line-height: 1.75; font-weight: 300; margin-bottom: 1rem; }
+  .integration-box p:last-of-type { margin-bottom: 1.5rem; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════════════ -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a class="nav-brand" onclick="showPage('home')">
+        <div class="nav-logo"><img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAH0AfQDASIAAhEBAxEB/8QAHAABAAIDAQEBAAAAAAAAAAAAAAYHAwQFAggB/8QAUBAAAQMDAQUEBgUHBwoGAwAAAQACAwQFEQYHEiExQRNRYYEUIjJxkaEIFSNCsRZSYpKywdEkMzdyc4KzFyU0Q1N1k9Lh8FZ0osLD0yc2g//EABkBAQADAQEAAAAAAAAAAAAAAAABAwQCBf/EADYRAAICAQIDBAkDBAMBAQAAAAABAgMEESESMUFRYYHRBRMUInGRocHwMkKxIzNS4RUkcmKi/9oADAMBAAIRAxEAPwD7LREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBFw7JXXyovlwp7hbmU9FC4inlAOX8cDjnjkceHJdxDiE1NaodcIuPQWCCk1HWXplTO+SqZuujcfVHL+HDuXYQQcmveWh57SPtOz327+M7ueOO/C9LmGx0J1CL79r6WI+zxverjGM478LpoTFyevEgi51XS3KS+UlVDXiOhjY4TU+5ntCc4Ofh8PFdFAm3rsEWtPX0cFdBQy1DGVM4JijPN2Oa2UJTT5BERCQiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAijNRp2vk1vHfW3LdpmgDsuO8AG4LR0wTx81JkK65ylrxLTR/PvOBZbFW0Oo7hc5rpJUQVOdyE59XLsjPHHAcBhd9EQmuuNa0iEREOwi597vNus0UUtwnMTZX7jcNLsny6LoDiMhDlSi20nugi1LtcqK1UZrK+bsYQQ3e3SeJ5cBxWzDIyaJksbg5j2hzXDqDyKE8S1013PSIiEmKSmp5KiOokgifNECI5HMBczPPB5hZURCNNDTNxgF4bay2Xt3Q9sDuHc3c45963ERAteoRYqepp6gyiCeOUxPMcm44HdcOYPcVl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" alt="Skew"></div>
+        <div class="nav-brand-text">
+          <div class="tagline">Clarity. Control. Capability.</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a onclick="showPage('home')" data-page="home" class="active">Home</a>
+        <a onclick="showPage('ai-governance')" data-page="ai-governance">AI Governance</a>
+        <a onclick="showPage('method')" data-page="method">The Skew Method</a>
+        <a onclick="showPage('framework')" data-page="framework">Clarity Framework™</a>
+        <a onclick="showPage('about')" data-page="about">About</a>
+        <a onclick="showPage('contact')" data-page="contact">Contact</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 1: HOME
+══════════════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- Hero -->
+  <div class="container">
+    <section class="hero">
+      <div class="hero-label" style="visibility:hidden;">Skew</div>
+      <h1>Complexity in.<br><em>Clarity out.</em></h1>
+      <p>We help government organisations align governance, communication, and capability to navigate complex reform.</p>
+      <a class="btn-primary" onclick="showPage('contact')">Start a conversation →</a>
+    </section>
+  </div>
+
+  <!-- What Skew Means -->
+  <section class="border-top">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">What Skew means</div>
+        <h2>When systems drift out of alignment, reform stalls.</h2>
+        <p>Complex systems become misaligned — skewed — over time. Governance, communication, and capability drift out of sync. We bring them back into alignment.</p>
+      </div>
+      <div class="grid-3">
+        <div class="pillar gov">
+          <div class="pillar-accent gov"></div>
+          <h3>Governance Design</h3>
+          <p>Clear structures, decision rights, and accountability frameworks that create the foundation for informed decision-making and effective oversight.</p>
+        </div>
+        <div class="pillar comms">
+          <div class="pillar-accent comms"></div>
+          <h3>Strategic Communication</h3>
+          <p>Communication systems that ensure the right information reaches the right people at the right time — enabling transparency and clarity.</p>
+        </div>
+        <div class="pillar cap">
+          <div class="pillar-accent cap"></div>
+          <h3>Capability Development</h3>
+          <p>The skills, processes, and structures needed to execute reform and sustain change across complex government environments.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Skew Method -->
+  <section class="border-top bg-off">
+    <div class="container">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;">
+        <div>
+          <div class="section-label">The Skew Method</div>
+          <h2 style="font-size:clamp(1.7rem,3vw,2.2rem); font-weight:300; color:var(--teal); margin-bottom:1rem; letter-spacing:-0.015em; line-height:1.2;">Structured. Sequential. Deliberate.</h2>
+          <p style="font-size:1rem; line-height:1.75; font-weight:300; margin-bottom:2rem;">Our three-phase method creates alignment from the foundation up. Governance before communication. Communication before capability. Each phase builds on the last.</p>
+          <a class="btn-text" onclick="showPage('method')">Explore the method →</a>
+        </div>
+        <div class="method-preview">
+          <div class="method-step">
+            <div class="step-num s1">01</div>
+            <div>
+              <h3>Assess</h3>
+              <p>Map stakeholders, define decision rights, establish governance foundations and accountability frameworks.</p>
+            </div>
+          </div>
+          <div class="step-arrow">↓</div>
+          <div class="method-step">
+            <div class="step-num s2">02</div>
+            <div>
+              <h3>Design</h3>
+              <p>Architect communication systems, reporting frameworks, and stakeholder engagement protocols.</p>
+            </div>
+          </div>
+          <div class="step-arrow">↓</div>
+          <div class="method-step">
+            <div class="step-num s3">03</div>
+            <div>
+              <h3>Sustain</h3>
+              <p>Build capability, embed practices, and ensure the reform can operate independently over time.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Governance Teaser -->
+  <section class="border-top">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">AI Governance</div>
+        <h2>Governance architecture for responsible AI adoption.</h2>
+        <p>Government organisations require structured, comprehensive governance to navigate AI adoption responsibly. Our AI Governance framework provides eight integrated components for effective oversight and control.</p>
+      </div>
+      <div class="grid-4">
+        <div class="gov-card"><div class="num">01</div><h3>AI Use Classification</h3><p>Structured taxonomy for categorising AI systems by risk, impact, and regulatory requirements.</p></div>
+        <div class="gov-card"><div class="num">02</div><h3>Decision Rights Matrix</h3><p>Clear allocation of decision-making authority across the full AI lifecycle.</p></div>
+        <div class="gov-card"><div class="num">03</div><h3>Risk Assessment Model</h3><p>Systematic approach to identifying and mitigating AI-related risks across all dimensions.</p></div>
+        <div class="gov-card"><div class="num">04</div><h3>AI Activity Register</h3><p>Centralised repository for tracking all AI initiatives, pilots, and deployments.</p></div>
+        <div class="gov-card"><div class="num">05</div><h3>Procurement Governance</h3><p>Frameworks for acquiring AI systems — vendor evaluation, contracts, and ongoing management.</p></div>
+        <div class="gov-card"><div class="num">06</div><h3>Executive Oversight</h3><p>Structures enabling senior leaders to exercise informed oversight of AI initiatives.</p></div>
+        <div class="gov-card"><div class="num">07</div><h3>Compliance Framework</h3><p>Ensures AI systems meet regulatory requirements and ethical standards throughout their lifecycle.</p></div>
+        <div class="gov-card"><div class="num">08</div><h3>Data Governance</h3><p>Controls for managing data quality, security, privacy, and ethical use in AI systems.</p></div>
+      </div>
+      <div style="margin-top:2.5rem;">
+        <a class="btn-text" onclick="showPage('ai-governance')">Explore AI Governance →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clarity Framework Teaser -->
+  <section class="border-top bg-off">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Clarity Framework™</div>
+        <h2>Modular capability development.</h2>
+        <p>Modular capability development designed to address the specific needs of your organisation. Each module can be delivered independently or as part of a comprehensive engagement.</p>
+      </div>
+      <div class="grid-2">
+        <div class="teaser-card">
+          <div class="section-label" style="margin-bottom:0;">01</div>
+          <h3>Strategic Alignment</h3>
+          <p>Align organisational objectives with reform initiatives and governance structures.</p>
+          <a class="btn-text" onclick="showPage('framework')">Learn more →</a>
+        </div>
+        <div class="teaser-card">
+          <div class="section-label" style="margin-bottom:0;">02</div>
+          <h3>Communication Design</h3>
+          <p>Design communication systems that enable clarity and informed decision-making.</p>
+          <a class="btn-text" onclick="showPage('framework')">Learn more →</a>
+        </div>
+        <div class="teaser-card">
+          <div class="section-label" style="margin-bottom:0;">03</div>
+          <h3>Capability Development</h3>
+          <p>Build the skills and structures needed to execute and sustain complex change.</p>
+          <a class="btn-text" onclick="showPage('framework')">Learn more →</a>
+        </div>
+        <div class="teaser-card">
+          <div class="section-label" style="margin-bottom:0;">04</div>
+          <h3>Implementation Support</h3>
+          <p>Provide hands-on support to ensure reforms are delivered effectively.</p>
+          <a class="btn-text" onclick="showPage('framework')">Learn more →</a>
+        </div>
+      </div>
+      <div style="margin-top:2.5rem;">
+        <a class="btn-text" onclick="showPage('framework')">View the full framework →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section class="border-top">
+    <div class="container">
+      <div class="cta-block">
+        <div class="cta-block-left">
+          <h2>Start a Conversation</h2>
+          <p>We work with government organisations to navigate complex reform. Get in touch to explore how we can help.</p>
+        </div>
+        <div class="cta-block-right">
+          <a class="btn-primary" onclick="showPage('contact')">Contact us →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 2: AI GOVERNANCE
+══════════════════════════════════════════════ -->
+<div class="page" id="page-ai-governance">
+  <div class="container">
+    <section class="hero">
+      <div class="hero-label">AI Governance</div>
+      <h1>Governance architecture<br>for <em>AI adoption.</em></h1>
+      <p>Government organisations require structured, comprehensive governance to navigate AI adoption responsibly. Our AI Governance framework provides the components needed for effective oversight and control.</p>
+      <p class="hero-sub">Each component is designed to integrate with existing governance structures while addressing the unique challenges of AI systems.</p>
+    </section>
+  </div>
+
+  <!-- 8 Component Cards -->
+  <section class="border-top">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Framework components</div>
+        <h2>Eight integrated components.</h2>
+        <p>A comprehensive architecture designed to work together — or to be deployed selectively based on your organisation's current maturity and priorities.</p>
+      </div>
+      <div class="grid-4" style="margin-bottom:3rem;">
+        <div class="gov-card"><div class="num">01</div><h3>AI Use Classification</h3><p>Structured taxonomy for categorising AI systems by risk, impact, and regulatory requirements.</p></div>
+        <div class="gov-card"><div class="num">02</div><h3>Decision Rights Matrix</h3><p>Clear allocation of decision-making authority across AI lifecycle stages.</p></div>
+        <div class="gov-card"><div class="num">03</div><h3>Risk Assessment Model</h3><p>Systematic approach to identifying, evaluating, and mitigating AI-related risks.</p></div>
+        <div class="gov-card"><div class="num">04</div><h3>AI Activity Register</h3><p>Centralised repository for tracking all AI initiatives, pilots, and deployments.</p></div>
+        <div class="gov-card"><div class="num">05</div><h3>Procurement Governance</h3><p>Frameworks for acquiring AI systems and services — vendor evaluation and ongoing management.</p></div>
+        <div class="gov-card"><div class="num">06</div><h3>Executive Oversight</h3><p>Structures enabling senior leaders to exercise informed oversight of AI strategy.</p></div>
+        <div class="gov-card"><div class="num">07</div><h3>Compliance Framework</h3><p>Ensures AI systems meet regulatory requirements throughout their full lifecycle.</p></div>
+        <div class="gov-card"><div class="num">08</div><h3>Data Governance</h3><p>Controls for managing data quality, security, privacy, and ethical use in AI systems.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Component Detail -->
+  <section class="border-top bg-off">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Component detail</div>
+        <h2>What each component delivers.</h2>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">01</div>
+          <div><h2>AI Use Classification</h2></div>
+        </div>
+        <p class="desc">A structured taxonomy for categorising AI systems by risk, impact, and regulatory requirements. Enables consistent evaluation and appropriate governance responses.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Risk-based classification framework</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Impact assessment criteria</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Regulatory mapping</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Use case categorisation</span></div>
+        </div>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">02</div>
+          <div><h2>Decision Rights Matrix</h2></div>
+        </div>
+        <p class="desc">Clear allocation of decision-making authority across AI lifecycle stages. Defines who decides, who is consulted, and who must be informed.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Role-based authority mapping</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Escalation pathways</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Approval thresholds</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Accountability assignments</span></div>
+        </div>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">03</div>
+          <div><h2>Risk Assessment Model</h2></div>
+        </div>
+        <p class="desc">Systematic approach to identifying, evaluating, and mitigating AI-related risks across technical, operational, ethical, and regulatory dimensions.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Multi-dimensional risk framework</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Quantitative and qualitative assessment</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Mitigation strategy templates</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Ongoing monitoring protocols</span></div>
+        </div>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">04</div>
+          <div><h2>AI Activity Register</h2></div>
+        </div>
+        <p class="desc">Centralised repository for tracking all AI initiatives, pilots, and deployments across the organisation. Ensures visibility and oversight.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Lifecycle stage tracking</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Resource allocation visibility</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Performance metrics</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Compliance status monitoring</span></div>
+        </div>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">05</div>
+          <div><h2>Procurement Governance</h2></div>
+        </div>
+        <p class="desc">Frameworks and processes for acquiring AI systems and services. Addresses vendor evaluation, contract terms, and ongoing vendor management.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Vendor assessment criteria</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Contract requirements</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Third-party risk management</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Exit strategy planning</span></div>
+        </div>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">06</div>
+          <div><h2>Executive Oversight</h2></div>
+        </div>
+        <p class="desc">Structures and processes that enable senior leaders to exercise informed oversight of AI initiatives and organisational AI strategy.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Executive briefing frameworks</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Strategic planning integration</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Performance dashboards</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Regular review cadences</span></div>
+        </div>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">07</div>
+          <div><h2>Compliance Framework</h2></div>
+        </div>
+        <p class="desc">Ensures AI systems meet regulatory requirements, ethical standards, and organisational policies throughout their lifecycle.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Regulatory requirement mapping</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Policy compliance checks</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Audit trail maintenance</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Remediation processes</span></div>
+        </div>
+      </div>
+
+      <div class="ai-component">
+        <div class="ai-component-header">
+          <div class="ai-component-num">08</div>
+          <div><h2>Data Governance</h2></div>
+        </div>
+        <p class="desc">Controls and processes for managing data used in AI systems, addressing quality, security, privacy, and ethical use.</p>
+        <div class="capabilities-grid">
+          <div class="capability-item"><span class="check">✓</span><span>Data quality standards</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Privacy protection measures</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Security controls</span></div>
+          <div class="capability-item"><span class="check">✓</span><span>Ethical use guidelines</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Integration Approach -->
+  <section class="border-top">
+    <div class="container">
+      <div class="cta-block">
+        <div class="cta-block-left">
+          <h2>Integration Approach</h2>
+          <p>These governance components don't operate in isolation. We work with your organisation to integrate them into existing structures, ensuring they complement rather than complicate your governance architecture.</p>
+          <p style="margin-top:0.75rem;">Our implementation approach considers your organisation's maturity, risk appetite, regulatory context, and strategic objectives.</p>
+        </div>
+        <div class="cta-block-right">
+          <a class="btn-primary" onclick="showPage('contact')">Discuss your needs →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 3: THE SKEW METHOD
+══════════════════════════════════════════════ -->
+<div class="page" id="page-method">
+  <div class="container">
+    <section class="hero">
+      <div class="hero-label">The Skew Method</div>
+      <h1>Structured.<br>Sequential.<br><em>Deliberate.</em></h1>
+      <p>A structured approach to aligning governance, communication, and capability in complex government reform. Designed to create lasting change.</p>
+    </section>
+  </div>
+
+  <!-- Why This Sequence -->
+  <section class="border-top">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Why sequence matters</div>
+        <h2>Why This Sequence Matters</h2>
+        <p>Complex reform fails when organisations try to build capability without clear governance, or establish communication systems without defined decision rights. Our method follows a deliberate sequence that creates alignment from the foundation up.</p>
+      </div>
+
+      <div class="phase-block">
+        <div class="phase-header">
+          <div class="phase-num" style="background:var(--orange);">1</div>
+          <div>
+            <h3>Governance — Establish Structure</h3>
+            <div class="subtitle">Phase 1 / Assess</div>
+          </div>
+        </div>
+        <p>We begin by establishing clear governance structures, decision rights, and accountability frameworks. This creates the foundation for informed decision-making and effective oversight.</p>
+        <div class="phase-detail">
+          <div class="detail-col">
+            <h4>Key Activities</h4>
+            <ul>
+              <li>Stakeholder mapping and engagement</li>
+              <li>Decision rights definition</li>
+              <li>Accountability framework design</li>
+              <li>Governance structure implementation</li>
+            </ul>
+          </div>
+          <div class="detail-col">
+            <h4>Expected Outcomes</h4>
+            <ul>
+              <li>Clear decision-making authority</li>
+              <li>Defined escalation pathways</li>
+              <li>Established oversight mechanisms</li>
+              <li>Documented governance model</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-divider">↓</div>
+
+      <div class="phase-block">
+        <div class="phase-header">
+          <div class="phase-num" style="background:var(--teal-light);">2</div>
+          <div>
+            <h3>Communication — Enable Clarity</h3>
+            <div class="subtitle">Phase 2 / Design</div>
+          </div>
+        </div>
+        <p>With governance in place, we design communication systems that ensure the right information reaches the right people at the right time. This enables transparency and informed decision-making.</p>
+        <div class="phase-detail">
+          <div class="detail-col">
+            <h4>Key Activities</h4>
+            <ul>
+              <li>Information flow mapping</li>
+              <li>Communication channel design</li>
+              <li>Reporting framework development</li>
+              <li>Stakeholder engagement protocols</li>
+            </ul>
+          </div>
+          <div class="detail-col">
+            <h4>Expected Outcomes</h4>
+            <ul>
+              <li>Transparent information flows</li>
+              <li>Effective reporting mechanisms</li>
+              <li>Informed stakeholder base</li>
+              <li>Reduced communication gaps</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-divider">↓</div>
+
+      <div class="phase-block">
+        <div class="phase-header">
+          <div class="phase-num" style="background:var(--teal);">3</div>
+          <div>
+            <h3>Capability — Build and Sustain</h3>
+            <div class="subtitle">Phase 3 / Sustain</div>
+          </div>
+        </div>
+        <p>Finally, we build the capabilities needed to execute reform and sustain change. This includes skills development, process implementation, and change management support.</p>
+        <div class="phase-detail">
+          <div class="detail-col">
+            <h4>Key Activities</h4>
+            <ul>
+              <li>Capability gap analysis</li>
+              <li>Training and development</li>
+              <li>Process design and implementation</li>
+              <li>Change management support</li>
+            </ul>
+          </div>
+          <div class="detail-col">
+            <h4>Expected Outcomes</h4>
+            <ul>
+              <li>Enhanced organisational capability</li>
+              <li>Sustainable operating models</li>
+              <li>Skilled workforce</li>
+              <li>Embedded change practices</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guiding Principles -->
+  <section class="border-top bg-off">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Guiding principles</div>
+        <h2>Guiding Principles</h2>
+        <p>Our method is guided by principles that ensure we deliver sustainable outcomes tailored to your organisation's needs.</p>
+      </div>
+      <div class="grid-2">
+        <div class="principle-card"><h3>Structured</h3><p>Every engagement follows a deliberate sequence. Governance before communication. Communication before capability.</p></div>
+        <div class="principle-card"><h3>Context-Aware</h3><p>We adapt our approach to your organisation's maturity, culture, and constraints. No off-the-shelf solutions.</p></div>
+        <div class="principle-card"><h3>Outcome-Focused</h3><p>We measure success by sustainable change, not deliverables. Our work is complete when your organisation can sustain the reform.</p></div>
+        <div class="principle-card"><h3>Collaborative</h3><p>We work alongside your teams, building internal capability while delivering results. We enable, not replace.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How We Work -->
+  <section class="border-top">
+    <div class="container">
+      <div class="cta-block">
+        <div class="cta-block-left">
+          <h2>How We Work</h2>
+          <p>Our engagements are scoped to your organisation's specific needs. We may work across all three phases or focus on specific areas where alignment is most critical.</p>
+          <p style="margin-top:0.75rem;">We typically work through embedded teams, partnering with your staff to ensure knowledge transfer and sustainable outcomes.</p>
+        </div>
+        <div class="cta-block-right">
+          <a class="btn-primary" onclick="showPage('contact')">Discuss your reform challenge →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 4: CLARITY FRAMEWORK™
+══════════════════════════════════════════════ -->
+<div class="page" id="page-framework">
+  <div class="container">
+    <section class="hero">
+      <div class="hero-label">Clarity Framework™</div>
+      <h1>Modular capability<br><em>development.</em></h1>
+      <p>Modular capability development designed to address the specific needs of your organisation. Each module can be delivered independently or as part of a comprehensive engagement.</p>
+      <p class="hero-sub">The framework is flexible, allowing us to focus on the areas where alignment is most critical for your reform success.</p>
+    </section>
+  </div>
+
+  <!-- Module Detail -->
+  <section class="border-top">
+    <div class="container">
+      <div class="fw-module">
+        <div class="fw-module-inner">
+          <div>
+            <div class="num">01</div>
+            <h2>Strategic Alignment</h2>
+            <p class="desc">Align organisational objectives with reform initiatives and governance structures.</p>
+            <h4 style="font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray-text);margin-bottom:0.75rem;font-family:var(--font-mono);">Key Components</h4>
+            <ul>
+              <li>Stakeholder analysis and mapping</li>
+              <li>Objective alignment workshops</li>
+              <li>Strategic planning integration</li>
+              <li>Success metrics definition</li>
+            </ul>
+          </div>
+          <div>
+            <div class="fw-meta-box"><div class="label">Typical Duration</div><div class="value">4–6 weeks</div></div>
+            <div class="fw-meta-box"><div class="label">Expected Outcome</div><div class="value-p">Clear line of sight from strategic objectives to reform activities, with engaged stakeholders and defined success criteria.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fw-module">
+        <div class="fw-module-inner">
+          <div>
+            <div class="num">02</div>
+            <h2>Communication Design</h2>
+            <p class="desc">Design communication systems that enable clarity and informed decision-making.</p>
+            <h4 style="font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray-text);margin-bottom:0.75rem;font-family:var(--font-mono);">Key Components</h4>
+            <ul>
+              <li>Information flow analysis</li>
+              <li>Communication channel design</li>
+              <li>Reporting framework development</li>
+              <li>Stakeholder engagement protocols</li>
+            </ul>
+          </div>
+          <div>
+            <div class="fw-meta-box"><div class="label">Typical Duration</div><div class="value">6–8 weeks</div></div>
+            <div class="fw-meta-box"><div class="label">Expected Outcome</div><div class="value-p">Transparent, effective communication systems that ensure the right information reaches the right people at the right time.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fw-module">
+        <div class="fw-module-inner">
+          <div>
+            <div class="num">03</div>
+            <h2>Capability Development</h2>
+            <p class="desc">Build the skills and structures needed to execute and sustain complex change.</p>
+            <h4 style="font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray-text);margin-bottom:0.75rem;font-family:var(--font-mono);">Key Components</h4>
+            <ul>
+              <li>Capability gap analysis</li>
+              <li>Training program design</li>
+              <li>Process development</li>
+              <li>Knowledge management systems</li>
+            </ul>
+          </div>
+          <div>
+            <div class="fw-meta-box"><div class="label">Typical Duration</div><div class="value">8–12 weeks</div></div>
+            <div class="fw-meta-box"><div class="label">Expected Outcome</div><div class="value-p">Enhanced organisational capability with skilled teams, documented processes, and sustainable operating models.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fw-module">
+        <div class="fw-module-inner">
+          <div>
+            <div class="num">04</div>
+            <h2>Implementation Support</h2>
+            <p class="desc">Provide hands-on support to ensure reforms are delivered effectively.</p>
+            <h4 style="font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray-text);margin-bottom:0.75rem;font-family:var(--font-mono);">Key Components</h4>
+            <ul>
+              <li>Embedded delivery teams</li>
+              <li>Change management support</li>
+              <li>Risk monitoring and mitigation</li>
+              <li>Continuous improvement cycles</li>
+            </ul>
+          </div>
+          <div>
+            <div class="fw-meta-box"><div class="label">Typical Duration</div><div class="value">Ongoing</div></div>
+            <div class="fw-meta-box"><div class="label">Expected Outcome</div><div class="value-p">Successfully executed reforms with embedded practices that enable ongoing adaptation and improvement.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Framework Applications -->
+  <section class="border-top bg-off">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Applications</div>
+        <h2>Framework Applications</h2>
+        <p>The Clarity Framework adapts to different reform contexts. Here are some examples of how we apply the modules to common government challenges.</p>
+      </div>
+      <div class="grid-2">
+        <div class="principle-card"><h3>Digital Transformation</h3><p>Focus on governance structures for technology decisions, communication systems for change management, and capability building for new digital tools.</p></div>
+        <div class="principle-card"><h3>AI Adoption</h3><p>Establish AI governance frameworks, design transparent reporting on AI initiatives, and build organisational AI literacy.</p></div>
+        <div class="principle-card"><h3>Organisational Restructure</h3><p>Clarify decision rights in new structures, design communication for transitions, and develop capabilities for new operating models.</p></div>
+        <div class="principle-card"><h3>Policy Reform</h3><p>Align stakeholders around policy objectives, establish clear communication on policy intent, and build implementation capability.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tailored CTA -->
+  <section class="border-top">
+    <div class="container">
+      <div class="cta-block">
+        <div class="cta-block-left">
+          <h2>Tailored to Your Context</h2>
+          <p>Every organisation faces unique challenges. We don't apply the framework mechanically — we adapt it to your context, maturity, constraints, and objectives.</p>
+          <p style="margin-top:0.75rem;">Some organisations need all four modules; others need focused intervention in one or two areas. Our goal is sustainable impact, not comprehensive coverage.</p>
+        </div>
+        <div class="cta-block-right">
+          <a class="btn-primary" onclick="showPage('contact')">Explore how we can help →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 5: ABOUT
+══════════════════════════════════════════════ -->
+<div class="page" id="page-about">
+  <div class="container">
+    <section class="hero">
+      <div class="hero-label">About</div>
+      <h1>We help government<br>navigate <em>complex reform.</em></h1>
+      <p>A boutique advisory firm focused exclusively on helping government organisations navigate complex reform. We work at the intersection of governance, communication, and capability.</p>
+      <p class="hero-sub">Our name reflects our core insight: complex systems become misaligned — skewed — over time. When governance, communication, and capability drift out of sync, reform stalls. We bring them back into alignment.</p>
+    </section>
+  </div>
+
+  <!-- Our Approach -->
+  <section class="border-top">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Our approach</div>
+        <h2>Our Approach</h2>
+        <p>We don't work like traditional consulting firms. We embed with your teams, focus on sustainable outcomes, and build capability as we deliver results.</p>
+      </div>
+      <div class="approach-grid">
+        <div class="approach-item">
+          <div class="icon">01 / Embedded</div>
+          <h3>Embedded Delivery</h3>
+          <p>We work alongside your teams, not at arm's length. This ensures knowledge transfer and builds sustainable internal capability throughout the engagement.</p>
+        </div>
+        <div class="approach-item">
+          <div class="icon">02 / Focused</div>
+          <h3>Government-Exclusive</h3>
+          <p>We work exclusively with government organisations. This focus means we understand APS culture, procurement processes, and the unique constraints of public sector reform.</p>
+        </div>
+        <div class="approach-item">
+          <div class="icon">03 / Independent</div>
+          <h3>Vendor-Neutral</h3>
+          <p>We are fully independent and vendor-neutral. Our recommendations are based on your needs, not commercial relationships with technology providers or platform vendors.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What Guides Us -->
+  <section class="border-top bg-off">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">What guides us</div>
+        <h2>What Guides Us</h2>
+        <p>The values and principles that shape how we work and what we deliver.</p>
+      </div>
+      <div class="values-grid">
+        <div class="value-item">
+          <h3>Clarity Over Complexity</h3>
+          <p>We believe complex problems require clear thinking, not more complexity. Every deliverable should simplify, not compound, the challenge at hand.</p>
+        </div>
+        <div class="value-item">
+          <h3>Sustainable Impact</h3>
+          <p>We measure success by whether change endures after we leave. Our engagement model is designed to build capability, not dependency.</p>
+        </div>
+        <div class="value-item">
+          <h3>Evidence-Informed</h3>
+          <p>Our frameworks and recommendations are grounded in evidence — from organisational theory, governance research, and two decades of public sector experience.</p>
+        </div>
+        <div class="value-item">
+          <h3>Structural Integrity</h3>
+          <p>We design governance and communication systems with structural integrity — frameworks that hold under pressure, not just in ideal conditions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Areas of Expertise -->
+  <section class="border-top">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Expertise</div>
+        <h2>Areas of Expertise</h2>
+      </div>
+      <div class="expertise-list">
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Governance Design</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>AI Governance Architecture</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Strategic Communication</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Capability Development</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Complex Reform Navigation</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Inclusive Communication</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Training Design and Delivery</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Knowledge Management</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Change Management</span></div>
+        <div class="expertise-item"><div class="expertise-dot"></div><span>Stakeholder Engagement</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who We Work With -->
+  <section class="border-top bg-off">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Who we work with</div>
+        <h2>Who We Work With</h2>
+        <p>We work with government organisations at the federal and territory level, from frontline teams to statutory bodies and senior executive groups.</p>
+      </div>
+      <div class="clients-grid">
+        <div class="client-item"><strong>Commonwealth Departments</strong>APS agencies navigating policy reform, digital transformation, or organisational change.</div>
+        <div class="client-item"><strong>Statutory Bodies</strong>Independent authorities requiring governance architecture and accountability frameworks.</div>
+        <div class="client-item"><strong>Territory Government</strong>ACT Government agencies and local government bodies navigating service reform.</div>
+        <div class="client-item"><strong>Senior Executive Teams</strong>SES leaders and executive groups requiring structured governance and AI oversight.</div>
+        <div class="client-item"><strong>Reform Program Teams</strong>Cross-agency teams delivering complex, multi-stakeholder reform programs.</div>
+        <div class="client-item"><strong>EL1 / EL2 Cohorts</strong>Emerging leaders requiring targeted capability development in governance and communication.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="border-top">
+    <div class="container">
+      <div class="cta-block">
+        <div class="cta-block-left">
+          <h2>Work With Us</h2>
+          <p>If you're navigating complex government reform and need structured support, we'd like to hear from you.</p>
+        </div>
+        <div class="cta-block-right">
+          <a class="btn-primary" onclick="showPage('contact')">Get in touch →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 6: CONTACT
+══════════════════════════════════════════════ -->
+<div class="page" id="page-contact">
+  <div class="container">
+    <section class="hero" style="padding-bottom:3rem;">
+      <div class="hero-label">Contact</div>
+      <h1>Navigating<br><em>complex reform?</em></h1>
+      <p>We work with government organisations to navigate complex reform. Get in touch to explore how Skew can help.</p>
+    </section>
+  </div>
+
+  <section class="border-top">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="section-label">Get in touch</div>
+          <h2>Let's start a conversation.</h2>
+          <p>We're selective about our engagements. We work best with organisations that are serious about sustainable reform and willing to embed the work into their operating model.</p>
+          <p>Tell us about your reform challenge and we'll let you know if and how we can help.</p>
+
+
+
+          <div style="margin-top:3rem;">
+            <div class="section-label">What to expect</div>
+            <p style="font-size:0.9rem; line-height:1.75; margin-top:0.5rem;">An initial conversation to understand your context and objectives. If there's a good fit, we'll propose a scoped engagement. No obligation, no hard sell.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-label">Enquiry form</div>
+
+          <!-- Success message (hidden until form submitted) -->
+          <div id="form-success" style="display:none; margin-top:1rem; padding:2rem; background:var(--bg-off); border:1px solid var(--teal-light);">
+            <div style="font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.18em; color:var(--orange); text-transform:uppercase; margin-bottom:0.75rem;">Received</div>
+            <p style="font-size:1rem; font-weight:400; color:var(--teal); margin-bottom:0.5rem;">Thanks for reaching out.</p>
+            <p style="font-size:0.9rem; line-height:1.75; font-weight:300;">We've received your enquiry and will be in touch within two business days.</p>
+          </div>
+
+          <form id="enquiry-form" action="https://formspree.io/f/mgonobbg" method="POST" class="contact-form" style="margin-top:1rem;" onsubmit="handleFormSubmit(event)">
+            <input type="hidden" name="_subject" value="New enquiry from Skew website">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+              <label for="organisation">Organisation</label>
+              <input type="text" id="organisation" name="organisation" placeholder="Your agency or department" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="your@email.gov.au" required>
+            </div>
+            <div class="form-group">
+              <label for="role">Role</label>
+              <input type="text" id="role" name="role" placeholder="Your position title">
+            </div>
+            <div class="form-group">
+              <label for="enquiry-type">Nature of Enquiry</label>
+              <select id="enquiry-type" name="enquiry_type">
+                <option value="">Select one</option>
+                <option>AI Governance Architecture</option>
+                <option>Clarity Framework™</option>
+                <option>The Skew Method</option>
+                <option>General Advisory</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Tell us about your reform challenge</label>
+              <textarea id="message" name="message" placeholder="Briefly describe your context, the challenge you're navigating, and what you're hoping to achieve…" required></textarea>
+            </div>
+            <button type="submit" class="form-submit" id="submit-btn">Submit Enquiry →</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teal Band -->
+  <div class="teal-band" style="margin-top:5rem;">
+    <div class="container">
+      <h2>Clarity. Control. Capability.</h2>
+      <p>Skew — boutique advisory for government reform.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="name">Skew</div>
+        <div class="tagline">Clarity. Control. Capability.</div>
+      </div>
+      <div class="footer-links">
+        <a onclick="showPage('home')">Home</a>
+        <a onclick="showPage('ai-governance')">AI Governance</a>
+        <a onclick="showPage('method')">The Skew Method</a>
+        <a onclick="showPage('framework')">Clarity Framework™</a>
+        <a onclick="showPage('about')">About</a>
+        <a onclick="showPage('contact')">Contact</a>
+      </div>
+      <div class="footer-copy">© 2025 Skew</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function showPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    const target = document.getElementById('page-' + page);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    const navLink = document.querySelector('[data-page="' + page + '"]');
+    if (navLink) navLink.classList.add('active');
+  }
+
+  async function handleFormSubmit(e) {
+    e.preventDefault();
+    const form = document.getElementById('enquiry-form');
+    const btn = document.getElementById('submit-btn');
+    const successMsg = document.getElementById('form-success');
+
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        form.style.display = 'none';
+        successMsg.style.display = 'block';
+        window.scrollTo({ top: successMsg.offsetTop - 100, behavior: 'smooth' });
+      } else {
+        btn.textContent = 'Something went wrong — please try again.';
+        btn.disabled = false;
+      }
+    } catch (err) {
+      btn.textContent = 'Network error — please try again.';
+      btn.disabled = false;
+    }
+  }
+</script>
+</body>
+</html>
